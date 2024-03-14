@@ -1,0 +1,299 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Status1
+        - /ObjectInstance2D1/Masks1
+      Splitter Ratio: 0.6117647290229797
+    Tree Height: 815
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Name: Time
+    SyncMode: 0
+    SyncSource: ObjectInstance2D
+Preferences:
+  PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/Camera
+      Enabled: true
+      Image Rendering: background and overlay
+      Image Topic: /sensor/camera/surround/front/image_rect_color
+      Name: Camera
+      Overlay Alpha: 0.5
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+      Visibility:
+        Grid: false
+        ObjectInstance2D: true
+        Value: true
+      Zoom Factor: 2
+    - Bounding boxes:
+        Colorization: By class
+        Show labels: false
+        Uniform color: 255; 255; 255
+        Value: true
+      Class: rviz/ObjectInstance2D
+      Classes:
+        airplane: 240; 255; 255
+        apple: 34; 139; 34
+        backpack: 169; 169; 169
+        banana: 255; 250; 240
+        banner: 176; 196; 222
+        baseball bat: 143; 188; 143
+        baseball glove: 72; 61; 139
+        bear: 0; 0; 139
+        bed: 205; 92; 92
+        bench: 95; 158; 160
+        bicycle: 250; 235; 215
+        bird: 127; 255; 0
+        blanket: 255; 255; 224
+        boat: 255; 235; 205
+        book: 211; 211; 211
+        bottle: 148; 0; 211
+        bowl: 178; 34; 34
+        bridge: 0; 255; 0
+        broccoli: 248; 248; 255
+        building-other-merged: 135; 206; 235
+        bus: 245; 245; 220
+        cabinet-merged: 188; 143; 143
+        cake: 173; 255; 47
+        car: 0; 255; 255
+        cardboard: 50; 205; 50
+        carrot: 255; 215; 0
+        cat: 210; 105; 30
+        ceiling-merged: 128; 0; 128
+        cell phone: 173; 216; 230
+        chair: 128; 128; 128
+        clock: 255; 182; 193
+        couch: 240; 255; 240
+        counter: 250; 240; 230
+        cow: 220; 20; 60
+        cup: 0; 191; 255
+        curtain: 255; 0; 255
+        dining table: 75; 0; 130
+        dirt-merged: 255; 245; 238
+        dog: 255; 127; 80
+        donut: 0; 128; 0
+        door-stuff: 128; 0; 0
+        elephant: 0; 255; 255
+        fence-merged: 176; 224; 230
+        fire hydrant: 138; 43; 226
+        floor-other-merged: 139; 69; 19
+        floor-wood: 102; 205; 170
+        flower: 0; 0; 205
+        food-other-merged: 192; 192; 192
+        fork: 105; 105; 105
+        frisbee: 85; 107; 47
+        fruit: 186; 85; 211
+        giraffe: 184; 134; 11
+        grass-merged: 46; 139; 87
+        gravel: 147; 112; 219
+        hair drier: 119; 136; 153
+        handbag: 169; 169; 169
+        horse: 100; 149; 237
+        hot dog: 218; 165; 32
+        house: 60; 179; 113
+        keyboard: 255; 250; 205
+        kite: 233; 150; 122
+        knife: 105; 105; 105
+        laptop: 230; 230; 250
+        light: 123; 104; 238
+        microwave: 240; 128; 128
+        mirror-stuff: 0; 250; 154
+        motorcycle: 127; 255; 212
+        mountain-merged: 244; 164; 96
+        mouse: 255; 240; 245
+        net: 72; 209; 204
+        orange: 220; 220; 220
+        oven: 224; 255; 255
+        paper-merged: 160; 82; 45
+        parking meter: 222; 184; 135
+        pavement-merged: 250; 128; 114
+        person: 240; 248; 255
+        pillow: 199; 21; 133
+        pizza: 128; 128; 128
+        platform: 25; 25; 112
+        playingfield: 245; 255; 250
+        potted plant: 255; 105; 180
+        railroad: 255; 228; 225
+        refrigerator: 144; 238; 144
+        remote: 124; 252; 0
+        river: 255; 228; 181
+        road: 255; 222; 173
+        rock-merged: 106; 90; 205
+        roof: 0; 0; 128
+        rug-merged: 112; 128; 144
+        sand: 253; 245; 230
+        sandwich: 255; 0; 255
+        scissors: 32; 178; 170
+        sea: 128; 128; 0
+        sheep: 255; 248; 220
+        shelf: 107; 142; 35
+        sink: 211; 211; 211
+        skateboard: 47; 79; 79
+        skis: 255; 140; 0
+        sky-other-merged: 255; 0; 0
+        snow: 255; 165; 0
+        snowboard: 153; 50; 204
+        spoon: 30; 144; 255
+        sports ball: 139; 0; 0
+        stairs: 255; 69; 0
+        stop sign: 165; 42; 42
+        suitcase: 139; 0; 139
+        surfboard: 47; 79; 79
+        table-merged: 65; 105; 225
+        teddy bear: 135; 206; 250
+        tennis racket: 0; 206; 209
+        tent: 218; 112; 214
+        tie: 189; 183; 107
+        toaster: 250; 250; 210
+        toilet: 255; 255; 240
+        toothbrush: 119; 136; 153
+        towel: 238; 232; 170
+        traffic light: 0; 0; 255
+        train: 255; 228; 196
+        tree-merged: 221; 160; 221
+        truck: 0; 0; 0
+        tv: 240; 230; 140
+        umbrella: 0; 100; 0
+        unknown: 255; 250; 250
+        vase: 255; 160; 122
+        wall-brick: 152; 251; 152
+        wall-other-merged: 112; 128; 144
+        wall-stone: 175; 238; 238
+        wall-tile: 219; 112; 147
+        wall-wood: 255; 239; 213
+        water-other: 255; 218; 185
+        window-blind: 205; 133; 63
+        window-other: 255; 192; 203
+        wine glass: 255; 20; 147
+        zebra: 0; 139; 139
+      Enabled: true
+      Hide if Score Below: 0.10000000149011612
+      Image:
+        Max Value: 1
+        Median window: 5
+        Min Value: 0
+        Normalize Range: true
+        Queue Size: 2
+        Transport Hint: raw
+        Unreliable: false
+      Image Topic: /sensor/camera/surround/front/image_raw
+      Instances Topic: /perception/object_detection/cam_front/instances_2d
+      Masks:
+        Alpha: 0.5
+        Colorization: By instance
+        Type: Semantic Segmentation
+        Uniform color: 0; 0; 0
+        Value: true
+      Name: ObjectInstance2D
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Default Light: true
+    Fixed Frame: odom
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Theta std deviation: 0.2617993950843811
+      Topic: /initialpose
+      X std deviation: 0.5
+      Y std deviation: 0.5
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz/ThirdPersonFollower
+      Distance: 22.106815338134766
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Field of View: 0.7853981852531433
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.23039832711219788
+      Target Frame: base_link
+      Yaw: 3.1254005432128906
+    Saved: ~
+Window Geometry:
+  Camera:
+    collapsed: false
+  Displays:
+    collapsed: false
+  Height: 1136
+  Hide Left Dock: false
+  Hide Right Dock: false
+  ObjectInstance2D:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd000000040000000000000349000003d7fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000000c00430061006d006500720061010000003d000001f90000001600fffffffb00000020004f0062006a0065006300740049006e007300740061006e0063006500320044010000023c000001d80000001600fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000020004f0062006a0065006300740049006e007300740061006e006300650032004400000002880000011c00000000000000000000000100000164000003d7fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000003d000003d7000000e60100001cfa000000000100000002fb000000100044006900730070006c0061007900730100000000ffffffff0000015600fffffffb0000000a0056006900650077007301000006090000012f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073800000039fc0100000002fc0000000000000738000003bc00fffffffa000000020200000003fb000000160052006f007300620061006700500061006e0065006c0000000000ffffffff0000000000000000fb000000160052006f007300620061006700500061006e0065006c0000000000ffffffff0000000000000000fb0000000800540069006d006501000004150000003e0000003900fffffffb0000000800540069006d006501000000000000045000000000000000000000027f000003d700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1848
+  X: 72
+  Y: 27

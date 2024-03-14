@@ -1,0 +1,5 @@
+scripts/utils/__pycache__
+
+data/*.pth
+data/*.pt
+data/*.py

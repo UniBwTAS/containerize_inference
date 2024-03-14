@@ -1,0 +1,70 @@
+<launch>
+
+    <!-- flag if rviz should be started -->
+    <arg name="use_rviz" default="true"/>
+
+    <!-- input topic -->
+    <arg name="input_topic" default="/sensor/camera/surround/front/image_raw"/>
+
+    <!-- output topic and namespace of this node -->
+    <arg name="namespace" default="perception/object_detection/cam_front"/>
+
+    <!-- visible GPUs in docker image, options: 'all', '0', '0,1', ...-->
+    <arg name="nvidia_visible_devices" default="all"/>
+
+    <!-- desired image -->
+    <arg name="docker_image" default="mmdetection"/> <!-- e.g. mmdetection, mmdetection3d, ultralytics -->
+
+    <!-- name of docker container (by default by create a unique name in order to be able to run multiple instances -->
+    <arg name="docker_container" default="$(eval anon(namespace.replace('/', '_') + '_' + docker_image))"/>
+
+    <!-- used remote machine, e.g.: 'ssh://anre@137.193.76.4' -->
+    <arg name="docker_host" default="local"/>
+
+    <!-- set DOCKER_HOST environment variable if needed -->
+    <env name="DOCKER_HOST" value="$(arg docker_host)" if="$(eval docker_host != 'local')"/>
+
+    <!-- whether to use TCP socket or shared memory to send sensor data or inference results between ROS/Host and docker
+    (options: tcp_socket, shared_memory; fallback to socket if DOCKER_HOST is non-local) -->
+    <arg name="ipc_method" default="shared_memory"/>
+
+    <!-- whether to compress image before sending to docker container (options: "none", "png", "jpeg"). If
+    input topic already corresponds to 'sensor_msgs/CompressedImage' type or if the input topic corresponds to
+    'sensor_msgs/Image' but has any bayer encoding this is ignored. However, if this argument is non-empty we send the
+    image masks (if there are any) as PNG back to host script. -->
+    <arg name="compression" default="$(eval 'none' if docker_host == 'local' else 'png')"/>
+
+    <!-- neural network config:
+    - mmdetection (https://github.com/open-mmlab/mmdetection/tree/main/configs), tested e.g.:
+        - mask-rcnn_r50_fpn_1x_coco (Instance Segmentation)
+        - mask2former_swin-t-p4-w7-224_8xb2-lsj-50e_coco-panoptic (Panoptic Segmentation, Tiny)
+        - mask2former_swin-s-p4-w7-224_8xb2-lsj-50e_coco-panoptic (Panoptic Segmentation, Small)
+        - mask2former_swin-l-p4-w12-384-in21k_16xb1-lsj-100e_coco-panoptic (Panoptic Segmentation, Large)
+        - faster-rcnn_r50_fpn_1x_coco (Object Detection)
+        - and more...
+    - mmdetection3d (https://github.com/open-mmlab/mmdetection3d/tree/main/configs), e.g.:
+        - (Not fully implemented yet)
+    - ultralytics (https://github.com/ultralytics/ultralytics), e.g.:
+        - yolov8m-seg.pt (Instance Segmentation)
+    -->
+    <arg name="neural_network_config" default="mask2former_swin-t-p4-w7-224_8xb2-lsj-50e_coco-panoptic"/>
+
+    <group ns="$(arg namespace)">
+
+        <!-- start docker container, which runs neural net -->
+        <node name="docker_container" pkg="containerize_inference" type="run_docker_container.sh" output="screen"
+              args="$(arg docker_image) $(arg docker_container) $(arg neural_network_config) $(arg docker_host) $(arg ipc_method) $(arg compression) $(arg nvidia_visible_devices)"/>
+
+        <!-- start interface node on host system, which communicates with docker container -->
+        <node name="$(anon inference_host)" pkg="containerize_inference" type="inference_host.py" output="screen"
+              args="$(arg docker_image) $(arg docker_container) $(arg neural_network_config) $(arg docker_host) $(arg ipc_method) $(arg compression)">
+            <remap from="input" to="$(arg input_topic)"/>
+            <param name="test" value="asdf"/>
+        </node>
+
+        <!-- start visualization node -->
+        <node name="rviz" pkg="rviz" type="rviz"
+              args="--display-config $(find containerize_inference)/rviz/inference.rviz"
+              if="$(arg use_rviz)"/>
+    </group>
+</launch>
