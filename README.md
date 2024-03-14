@@ -6,6 +6,8 @@
   - IPC based on TCP socket (allows inference on remote machine with strong GPUs)
 - 🚀 Automatic deployment: build, start and stop of Docker container
 
+![Containerize Inference Demo](https://github.com/UniBwTAS/containerize_inference/blob/master/assets/demo.gif)
+
 ## Install:
 
 1. [Install Docker](https://docs.docker.com/engine/install/ubuntu/)
@@ -13,7 +15,7 @@
 3. [Install ROS1](http://wiki.ros.org/noetic/Installation/Ubuntu)
 4. [Setup ROS workspace](https://catkin-tools.readthedocs.io/en/latest/quick_start.html#initializing-a-new-workspace) (if not already existing)
 5. Navigate to `src` folder of your catkin workspace (or some sub-folder of your choice)
-6. Get GitHub Dependencies & this project:
+6. Get ROS GitHub Dependencies & this project:
 ```shell
 # ROS message definitions for instance/semantic/panoptic segmentation & object detection
 git clone https://github.com/UniBwTAS/object_instance_msgs.git
@@ -29,8 +31,13 @@ git clone https://github.com/UniBwTAS/containerize_inference.git
 sudo rosdep update
 sudo rosdep install --from-paths . --ignore-src -r -y
 ```
-8. Build everything
-9. Run node (with YOLOv8) + visualization:
+8. Get dependencies for IPC:
+```shell
+sudo apt install python3-opencv
+pip3 install posix-ipc
+```
+9. Build everything
+10. Run node (with YOLOv8) + visualization:
 ```shell
 roslaunch containerize_inference inference.launch
 ```

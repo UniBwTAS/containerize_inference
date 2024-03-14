@@ -26,7 +26,7 @@ if [ "$DOCKER_HOST" != "local" ]; then
   DOCKER_HOST_SSH=${DOCKER_HOST#"ssh://"}  # remove ssh:// prefix
 
   # get free port on remote machine to use for ipc between ROS node and docker container for sensor data and inference results
-  PORT=$(ssh anre@137.193.76.4 "python3 -c 'import socket; s=socket.socket(); s.bind((\"\", 0)); print(s.getsockname()[1]); s.close()'")
+  PORT=$(ssh $DOCKER_HOST_SSH "python3 -c 'import socket; s=socket.socket(); s.bind((\"\", 0)); print(s.getsockname()[1]); s.close()'")
 
   # copy ./scripts folder to /tmp of remote machine (create individual folder for each individual container to avoid race conditions on code changes)
   ssh $DOCKER_HOST_SSH "mkdir -p /tmp/${DOCKER_CONTAINER}"
