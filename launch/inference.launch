@@ -18,7 +18,7 @@
     <!-- name of docker container (by default by create a unique name in order to be able to run multiple instances -->
     <arg name="docker_container" default="$(eval anon(namespace.replace('/', '_') + '_' + docker_image))"/>
 
-    <!-- used remote machine, e.g.: 'ssh://anre@137.193.76.4' -->
+    <!-- used remote machine, e.g.: 'ssh://andi@192.168.1.4' -->
     <arg name="docker_host" default="local"/>
 
     <!-- set DOCKER_HOST environment variable if needed -->

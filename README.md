@@ -65,7 +65,8 @@ roslaunch containerize_inference inference.launch docker_image:=ultralytics neur
 
 ## Run inference on remote machine:
 ```shell
-roslaunch containerize_inference inference.launch docker_host:="ssh://anre@137.193.76.4"
+roslaunch containerize_inference inference.launch docker_host:="ssh://andi@192.168.1.4"
 ```
 > [!NOTE]
-> Docker and NVIDIA Container Toolkit has to be installed on remote machine.
+> Docker and NVIDIA Container Toolkit has to be installed on remote machine. Consider copying your public ssh key to the 
+> remote machine as an authorized key in order to avoid entering the password each time: `ssh-copy-id andi@192.168.1.4`
