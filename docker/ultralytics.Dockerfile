@@ -4,21 +4,20 @@
 
 # Start FROM PyTorch image https://hub.docker.com/r/pytorch/pytorch or nvcr.io/nvidia/pytorch:23.03-py3
 FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-runtime
-RUN pip install --no-cache nvidia-tensorrt --index-url https://pypi.ngc.nvidia.com
+# RUN pip install --no-cache nvidia-tensorrt --index-url https://pypi.ngc.nvidia.com
 
 # Downloads to user config dir
-ADD https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.ttf \
-    https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.Unicode.ttf \
-    /root/.config/Ultralytics/
+# ADD https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.ttf \
+#     https://github.com/ultralytics/assets/releases/download/v0.0.0/Arial.Unicode.ttf \
+#     /root/.config/Ultralytics/
 
-# Install linux packages
-# g++ required to build 'tflite_support' and 'lap' packages, libusb-1.0-0 required for 'tflite_support' package
+# gcc is required for posix-ipc and git for cloning ultralytics repository (rest is required for opencv-python)
 RUN apt update \
-    && apt install --no-install-recommends -y gcc git zip curl htop libgl1 libglib2.0-0 libpython3-dev gnupg g++ libusb-1.0-0
+    && apt install --no-install-recommends -y gcc git libgl1 libglib2.0-0
 
 # Security updates
 # https://security.snyk.io/vuln/SNYK-UBUNTU1804-OPENSSL-3314796
-RUN apt upgrade --no-install-recommends -y openssl tar
+# RUN apt upgrade --no-install-recommends -y openssl tar
 
 # Create working directory
 WORKDIR /usr/src/ultralytics
@@ -26,11 +25,11 @@ WORKDIR /usr/src/ultralytics
 # Copy contents
 # COPY . /usr/src/ultralytics  # git permission issues inside container
 RUN git clone https://github.com/ultralytics/ultralytics -b main /usr/src/ultralytics
-ADD https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8n.pt /usr/src/ultralytics/
+# ADD https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8n.pt /usr/src/ultralytics/
 
 # Install pip packages
 RUN python3 -m pip install --upgrade pip wheel
-RUN pip install --no-cache -e ".[export]" albumentations comet pycocotools lancedb pytest-cov
+RUN pip install --no-cache -e .
 
 # Run exports to AutoInstall packages
 # RUN yolo export model=tmp/yolov8n.pt format=edgetpu imgsz=32
