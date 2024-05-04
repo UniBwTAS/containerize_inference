@@ -3,6 +3,9 @@
     <!-- flag if rviz should be started -->
     <arg name="use_rviz" default="true"/>
 
+    <!-- print output (log or screen) -->
+    <arg name="print_output_to" default="screen"/>
+
     <!-- input topic -->
     <arg name="input_topic" default="/sensor/camera/surround/front/image_raw"/>
 
@@ -52,14 +55,13 @@
     <group ns="$(arg namespace)">
 
         <!-- start docker container, which runs neural net -->
-        <node name="docker_container" pkg="containerize_inference" type="run_docker_container.sh" output="screen"
+        <node name="docker_container" pkg="containerize_inference" type="run_docker_container.sh" output="$(arg print_output_to)"
               args="$(arg docker_image) $(arg docker_container) $(arg neural_network_config) $(arg docker_host) $(arg ipc_method) $(arg compression) $(arg nvidia_visible_devices)"/>
 
         <!-- start interface node on host system, which communicates with docker container -->
-        <node name="$(anon inference_host)" pkg="containerize_inference" type="inference_host.py" output="screen"
+        <node name="$(anon inference_host)" pkg="containerize_inference" type="inference_host.py" output="$(arg print_output_to)"
               args="$(arg docker_image) $(arg docker_container) $(arg neural_network_config) $(arg docker_host) $(arg ipc_method) $(arg compression)">
             <remap from="input" to="$(arg input_topic)"/>
-            <param name="test" value="asdf"/>
         </node>
 
         <!-- start visualization node -->
