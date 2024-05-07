@@ -19,20 +19,22 @@ def numpy_to_object_instance_2d_array_msg(header, instance_segmentation, semanti
     msg = ObjectInstance2DArray()
     msg.header = header
     i = 0
-    for label, score, box in zip(labels, scores, boxes):
-        instance_msg = ObjectInstance2D()
-        instance_msg.id = i + 1 if instance_ids is None else int(instance_ids[i])
-        instance_msg.is_instance = True
-        instance_msg.class_name = full_classes_list[int(label)]
-        instance_msg.class_index = int(label)
-        instance_msg.class_probabilities = [float(score), ]
-        instance_msg.class_count = len(full_classes_list)
-        instance_msg.bounding_box_min_x = int(box[0])
-        instance_msg.bounding_box_min_y = int(box[1])
-        instance_msg.bounding_box_max_x = int(box[2])
-        instance_msg.bounding_box_max_y = int(box[3])
-        msg.instances.append(instance_msg)
-        i += 1
+
+    if labels is not None and scores is not None and boxes is not None:
+        for label, score, box in zip(labels, scores, boxes):
+            instance_msg = ObjectInstance2D()
+            instance_msg.id = i + 1 if instance_ids is None else int(instance_ids[i])
+            instance_msg.is_instance = True
+            instance_msg.class_name = full_classes_list[int(label)]
+            instance_msg.class_index = int(label)
+            instance_msg.class_probabilities = [float(score), ]
+            instance_msg.class_count = len(full_classes_list)
+            instance_msg.bounding_box_min_x = int(box[0])
+            instance_msg.bounding_box_min_y = int(box[1])
+            instance_msg.bounding_box_max_x = int(box[2])
+            instance_msg.bounding_box_max_y = int(box[3])
+            msg.instances.append(instance_msg)
+            i += 1
 
     # instance part of panoptic segmentation
     if instance_segmentation is not None:
