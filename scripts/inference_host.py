@@ -43,7 +43,8 @@ class InferenceHost:
     def image_callback(self, msg):
         # discard if input latency is already too high (full queue)
         input_delay = (rospy.Time.now() - msg.header.stamp).to_sec()
-        if input_delay > 0.05:
+        if input_delay > 0.1:
+            self.pub_finished.publish(msg.header)
             print("[HOST] Discard message with latency:", input_delay)
             return
         print("[HOST] Input latency", input_delay)
