@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(containerize_inference)
 
-find_package(catkin REQUIRED COMPONENTS roscpp tf2_ros sensor_msgs ros_numpy)
+find_package(catkin REQUIRED COMPONENTS rospy sensor_msgs ros_numpy)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -20,6 +20,6 @@ catkin_python_setup()
 catkin_package(
         # INCLUDE_DIRS include
         # LIBRARIES containerize_inference
-        CATKIN_DEPENDS roscpp tf2_ros sensor_msgs ros_numpy
+        CATKIN_DEPENDS rospy sensor_msgs ros_numpy
         # DEPENDS system_lib
 )
