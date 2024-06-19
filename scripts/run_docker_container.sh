@@ -39,7 +39,7 @@ if [ "$DOCKER_HOST" != "local" ]; then
   HOST_DATA_PATH="/tmp/containerize_inference_data"
 fi
 
-docker build -f docker/$DOCKER_IMAGE.Dockerfile -t $DOCKER_IMAGE .
+# docker build -f docker/$DOCKER_IMAGE.Dockerfile -t $DOCKER_IMAGE .
 docker run \
   --rm \
   --runtime=nvidia \
