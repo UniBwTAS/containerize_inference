@@ -6,7 +6,7 @@ import sys
 import time
 from cv_bridge import CvBridge
 from object_instance_msgs.msg import ObjectInstance2DArray, ObjectInstance3DArray
-from sensor_msgs.msg import Image, CompressedImage, PointCloud2
+from sensor_msgs.msg import Image, CompressedImage, PointCloud2, CameraInfo
 from std_msgs.msg import Header
 
 from utils.dataset import COCO_PANOPTIC_CLASSES
@@ -14,6 +14,8 @@ from utils.docker_utils import get_ip_for_docker_container, get_port_for_docker_
 from utils.ipc_utils import SharedMemoryCommunication, TcpSocketCommunication
 from utils.ros_utils import numpy_to_object_instance_2d_array_msg, point_cloud2_msg_to_numpy, is_compressed_image_topic, \
     ros_image_encoding_to_cv_encoding
+from image_geometry import PinholeCameraModel
+import cv2
 
 
 class InferenceHost:
@@ -30,6 +32,7 @@ class InferenceHost:
             self.sub = rospy.Subscriber("input", input_msg_type, self.image_callback, queue_size=1, tcp_nodelay=True)
         elif input_type == "point_cloud":
             self.sub = rospy.Subscriber("input", PointCloud2, self.point_cloud_callback, queue_size=1, tcp_nodelay=True)
+        self.sub_cam_info = rospy.Subscriber("camera_info", CameraInfo, self.cam_info_callback, queue_size=1)
 
         # init publisher
         if output_type == "instances_2d":
@@ -39,6 +42,10 @@ class InferenceHost:
         elif output_type == "semantic_segmentation" and input_type == "point_cloud":
             self.pub = rospy.Publisher("semantic_segmentation", PointCloud2, queue_size=1)
         self.pub_finished = rospy.Publisher("inference_complete_trigger", Header, queue_size=1)  # lightweight msg
+
+        self.camera_pinhole_model = None
+        self.mapx = None
+        self.mapy = None
 
     def image_callback(self, msg):
         # discard if input latency is already too high (full queue)
@@ -50,21 +57,31 @@ class InferenceHost:
         print("[HOST] Input latency", input_delay)
 
         # convert image message to numpy array
+        # start_time_to_cv = time.time()
+        # if type(msg) == CompressedImage:
+        #     numpy_array = np.ndarray(shape=(len(msg.data),), dtype=np.uint8, buffer=msg.data)
+        #     compression = msg.format
+        # else:
+        #     numpy_array = self.bridge.imgmsg_to_cv2(msg, "passthrough")
+        #     compression = "none"
+        #     if self.compression != "none" and not msg.encoding.startswith("bayer_"):
+        #         # numpy_array is compressed automatically during send
+        #         compression = self.compression
+        # print("[HOST] Duration [to_cv]:", time.time() - start_time_to_cv)
+
+        # debayer camera image
         start_time_to_cv = time.time()
-        if type(msg) == CompressedImage:
-            numpy_array = np.ndarray(shape=(len(msg.data),), dtype=np.uint8, buffer=msg.data)
-            compression = msg.format
-        else:
-            numpy_array = self.bridge.imgmsg_to_cv2(msg, "passthrough")
-            compression = "none"
-            if self.compression != "none" and not msg.encoding.startswith("bayer_"):
-                # numpy_array is compressed automatically during send
-                compression = self.compression
-        print("[HOST] Duration [to_cv]:", time.time() - start_time_to_cv)
+        numpy_array = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+
+        # rectify camera image
+        if self.camera_pinhole_model is None:
+            return
+        numpy_array = cv2.remap(numpy_array, self.mapx, self.mapy, cv2.INTER_CUBIC)
 
         # send data to docker container
         start_time_send_img = time.time()
-        input_encoding = "BGR" if type(msg) == CompressedImage else ros_image_encoding_to_cv_encoding(msg.encoding)
+        input_encoding = "BGR"
+        compression = "none"
         self.ipc.start_send()
         self.ipc.write_opencv_image(numpy_array, input_encoding, compression)
         self.ipc.flush()
@@ -132,6 +149,17 @@ class InferenceHost:
         # self.pub.publish(msg)
         # print("[HOST] Duration [pub]:", time.time() - start_time_pub)
         # print("[HOST] Output latency:", (rospy.Time.now() - msg.header.stamp).to_sec())
+
+    def cam_info_callback(self, msg):
+        if self.camera_pinhole_model is not None:
+            return
+        
+        self.camera_pinhole_model = PinholeCameraModel()
+        self.camera_pinhole_model.fromCameraInfo(msg)
+        self.mapx = np.ndarray(shape=(self.camera_pinhole_model.height, self.camera_pinhole_model.width, 1), dtype='float32')
+        self.mapy = np.ndarray(shape=(self.camera_pinhole_model.height, self.camera_pinhole_model.width, 1), dtype='float32')
+        cv2.initUndistortRectifyMap(self.camera_pinhole_model.K, self.camera_pinhole_model.D, self.camera_pinhole_model.R, self.camera_pinhole_model.P,
+                                    (self.camera_pinhole_model.width, self.camera_pinhole_model.height), cv2.CV_32FC1, self.mapx, self.mapy)
 
 
 def main():

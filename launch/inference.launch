@@ -7,7 +7,10 @@
     <arg name="print_output_to" default="screen"/>
 
     <!-- input topic -->
-    <arg name="input_topic" default="/sensor/camera/surround/front/image_raw"/>
+    <arg name="image_topic" default="/sensor/camera/surround/front/image_raw"/>
+
+    <!-- camera info topic -->
+    <arg name="camera_info_topic" default="/sensor/camera/surround/front/camera_info"/>
 
     <!-- output topic and namespace of this node -->
     <arg name="namespace" default="perception/object_detection/cam_front"/>
@@ -61,7 +64,8 @@
         <!-- start interface node on host system, which communicates with docker container -->
         <node name="$(anon inference_host)" pkg="containerize_inference" type="inference_host.py" output="$(arg print_output_to)"
               args="$(arg docker_image) $(arg docker_container) $(arg neural_network_config) $(arg docker_host) $(arg ipc_method) $(arg compression)">
-            <remap from="input" to="$(arg input_topic)"/>
+            <remap from="input" to="$(arg image_topic)"/>
+            <remap from="camera_info" to="$(arg camera_info_topic)"/>
         </node>
 
         <!-- start visualization node -->
