@@ -29,12 +29,13 @@ RUN apt-get update \
 
 # Install MMEngine and MMCV
 RUN pip install openmim && \
-    mim install "mmengine>=0.7.1" "mmcv>=2.0.0rc4"
+    mim install "mmengine==0.10.4" "mmcv==2.1.0"
 
 # Install MMDetection
 RUN conda clean --all \
     && git clone https://github.com/open-mmlab/mmdetection.git /mmdetection \
     && cd /mmdetection \
+    && git checkout v3.3.0 \
     && pip install --no-cache-dir -e .
 
 # Install python library for inter-process communication via shared memory
