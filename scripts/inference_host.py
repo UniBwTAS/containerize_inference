@@ -47,9 +47,15 @@ class InferenceHost:
         self.mapx = None
         self.mapy = None
 
+        rospy.loginfo("HealthMonitor: {name: input/image, status: warn, text: no msg received yet}")
+        rospy.loginfo("HealthMonitor: {name: input/camera_info, status: warn, text: no msg received yet}")
+
     def image_callback(self, msg):
-        # discard if input latency is already too high (full queue)
         input_delay = (rospy.Time.now() - msg.header.stamp).to_sec()
+        threshold = 0.1
+        rospy.loginfo(f"HealthMonitor: {{name: input/image, status: {'ok' if input_delay < threshold else 'warn'}, text: 'latency: {input_delay:.3f}s, desired: <{threshold:.3f}s'}}")
+
+        # discard if input latency is already too high (full queue)
         # if input_delay > 0.1:
         #     self.pub_finished.publish(msg.header)
         #     print("[HOST] Discard message with latency:", input_delay)
@@ -151,6 +157,10 @@ class InferenceHost:
         # print("[HOST] Output latency:", (rospy.Time.now() - msg.header.stamp).to_sec())
 
     def cam_info_callback(self, msg):
+        input_delay = (rospy.Time.now() - msg.header.stamp).to_sec()
+        threshold = 0.1
+        rospy.loginfo(f"HealthMonitor: {{name: input/camera_info, status: {'ok' if input_delay < threshold else 'warn'}, text: 'latency: {input_delay:.3f}s, desired: <{threshold:.3f}s'}}")
+
         if self.camera_pinhole_model is not None:
             return
         
